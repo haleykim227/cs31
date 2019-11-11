@@ -1,22 +1,24 @@
-Seungwon Kim (Haley)
+Haley Kim
 405111152
+Project 2 Report
 
-Step 5: 
-input "0" for "How many registered voters were surveyed?"
-input "2" for "How many of them say they will vote for Newsom?"
-input "3" for "How many of them say they will vote for Cox?"
-There were no error messages displayed, and the build was successful.
-The program stated that inf% would vote for Newsom, that inf% would vote for Cox, and that Cox is predicted to win the election.
-Obviously, the results were nonsensical.
+a) Notable Obstacles:
 
-Step 6:
-logic error: changed the multiplication to division on line 20 after 100.0
-There were no error messages, and the build was successful.
-Results were incorrect, as when input 10, 3, and 7, the result was that 3.3% would vote for Newsom and that 70.0% would vote for Cox. The correct answers would have been 30.0% and 70.0%.
+1. If-statements and how to organize them in brackets so that there are no hanging else-statements
+2. Remembering to input cin.ignore after cin integer and before getline
+3. Making sure the precision of the decimal is 2
+4. Figuring out the extra charge based on miles driven to match the specs given
 
-Step 7:
-compile error: 
-1) deleted a semicolon after line 20
-2) deleted a curly bracket at the end of the program on line 34
-An error message indicating "Build Failed" as well as error messages on line 20 and line 34 stating "Expected ; at the end of declaration" and "Expected '}'"
-There were no results since the build was unsuccessful.
+b) List of Test Data:
+
+1. Negative number for Odometer at Start (-2)
+2. 0 for Odometer at Start (0)
+3. Lesser number for Odometer at End than Odometer at Start (2,1)
+4. Negative number of rental days (2,3,-2)
+5. Empty string for Customer Name (2,3,4,"")
+6. Luxury status that is not y or n (2,3,4,John,Y)
+7. Month number that is not between 1 and 12 (2,3,4,John,y,13)
+8. Correct input for non-luxury car (2,3,4.John,n,12)
+9. Correct input for luxury car (2,3,4,John,y,12)
+10. Correct input for winter months (2,3,4,John,n,1)
+11. Correct input for different mileage (0,100,4,John,y,12) (0,300,4,John,y,12) (0,400,4,John,y,12)(0,500,4,John,y,12)
