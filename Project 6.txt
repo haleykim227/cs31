@@ -1,0 +1,211 @@
+Haley Kim
+405111152
+
+1a) 
+ORIGINAL SOLUTIONN:
+int main()
+    {
+        int arr[3] = { 5, 10, 15 };
+        int* ptr = arr;
+
+        *ptr = 30;       
+        *ptr + 1 = 20;      // this is a bug
+        ptr += 2;	    
+        ptr[0] = 10;        // this is a bug
+
+        while (ptr >= arr)  // this is a bug
+        {
+            ptr--;	    // this is a bug
+            cout << *ptr << endl;
+        }
+    }
+FIXED SOLUTION:
+int main()
+{
+    int arr[3] = { 5, 10, 15 };
+    int* ptr = arr;
+    
+    *ptr = 30;          
+    *(ptr + 1) = 20; 
+    ptr += 2;
+    *ptr = 10;   
+    ptr = arr;
+    
+    while (ptr <= &arr[2])
+    {
+        cout << *ptr << endl; 
+        ptr++;
+    }
+}
+
+1b)
+WHY THE FUNCTION WON'T WORK:
+Because the pointer in the argument is passed by value, no changes are made to the pointer pToMax when the function findMax is carried out.
+HOW TO FIX THE FUNCTION:
+change the first line to:
+void findMax(int arr[], int n, int* &pToMax)
+
+1c)
+WHY IT DOES NOT WORK:
+Because the pointer variable is declared but never initialized, it does not point to anything in memory. 
+HOW TO FIX THE FUNCTION:
+void computeCube(int n, int* ncubed)
+{
+    *ncubed = n * n * n;
+}
+
+int main()
+{
+    int i = 5;
+    int* ptr = &i;
+    computeCube(i, ptr);
+    cout << "Five cubed is " << *ptr << endl;
+}
+
+1d)
+WHY THE PROGRAM DOESN'T WORK:
+Because the program takes in the parameters as arrays, the program is comparing the base addresses of the arrays. This will always evaluate to false, because the base addresses of the arrays will always be different. Instead of fixing this program with array style - using square brackets to compare each character - we will fix this using pointers.
+HOW TO FIX THE PROGRAM:
+bool strequal(const char* str1, const char* str2) // passing in pointers to arrays
+{
+    while (*str1 != 0  &&  *str2 != 0) // dereferencing and checking each value, not the entire array
+    {
+        if (*str1 != *str2) // not comparing base addresses
+            return false;
+        str1++;            
+        str2++;
+    }
+    return *str1 == *str2;   // comparisons of values, not addresses
+}
+
+int main()
+{
+    char a[15] = "Zhou";
+    char b[15] = "Zou";
+    
+    if (strequal(a,b))
+        cout << "They're the same person!\n";
+}
+
+1e)
+WHY THE PROGRAM FAILS:
+Because anArray is a local variable to the function getPtrToArray, when we exit that function, all the elements within anArray are destroyed and set to undefined values. When function f runs, some of the values of junk maybe set in the previously destroyed anArray, and the program ultimately fails due to undefined behavior.
+
+2.
+a) double* cat;
+b) double mouse[5];
+c) cat = &mouse[4];
+d) *cat = 25;
+e) *(mouse + 3) = 42;
+f) cat = cat - 3;
+g) cat[1] = 27;
+h) cat[0] = 54;
+i) bool b = (*cat == *(cat + 1));
+j) bool d = (cat == &mouse[0]);
+
+3a)
+REWRITTEN PROGRAM:
+double mean(const double* scores, int numScores)
+{
+    double tot = 0;
+    for (int k = 0; k < numScores; k++)
+        tot += *(scores+k);
+    return tot/numScores;
+}
+
+3b)
+REWRITTEN PROGRAM:
+const char* findTheChar(const char* str, char chr)
+    {
+        for (int k = 0; *(str + k) != 0; k++)
+            if (*(str+k) == chr)
+                return (str + k);
+
+        return nullptr;
+    }
+
+3c)
+REWRITTEN PROGRAM:
+const char* findTheChar(const char* str, char chr)
+{
+    for (; *str != 0; str++)
+    {
+        if (*str == chr)
+            return str;
+    }
+    return nullptr;
+}
+
+4)
+#include <iostream>
+using namespace std;
+
+int* maxwell(int* a, int* b) //returns the pointer position based on which one is greater.
+{
+    if (*a > *b)
+        return a;
+    else
+        return b;
+}
+
+void swap1(int* a, int* b) //swaps the addresses of the values but has no effect on overall output.
+{
+    int* temp = a;
+    a = b;
+    b = temp;
+}
+
+void swap2(int* a, int* b) //actually swaps the values.
+{
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int main()
+{
+    int array[6] = { 5, 3, 4, 17, 22, 19 }; //sets an array of size 6
+
+    int* ptr = maxwell(array, &array[2]); //compares the value 5 and 4 and sets pointer position to the base address of 5 (i.e &array[0])
+    *ptr = -1; //sets the value of &array[0] to -1 instead of 5.
+    ptr += 2; //moves the pointer up to position &array[2].
+    ptr[1] = 9;	//makes the value of &array[3] to 9 instead of 17
+    *(array+1) = 79;	//changes the value 3 to 79
+
+    cout << &array[5] - ptr << endl; //prints out the difference of 5 and 2, because ptr is pointing at &array[2]. The output is 3, and a new line.
+
+    swap1(&array[0], &array[1]); //swaps the base addresses of &array[0] and &array[1]
+    swap2(array, &array[2]);  //swaps the values at position 0 and 2 of the array, that is swapping the value -1 and the value 4.
+
+    for (int i = 0; i < 6; i++)	 //goes through the modified array 
+        cout << array[i] << endl; //prints out each value of each element in the array one line at a time.	
+}
+
+The output is as follows:
+3
+4
+79
+-1
+9
+22
+19
+
+5)
+void removeS(char* str)
+{
+    char* replacement = str;
+    while(*str != 0)
+    {
+        if(*str == 's' || *str == 'S')
+        {
+            str++;
+        }
+        else
+        {
+            *replacement = *str;
+            replacement++;
+            str++;
+        }
+    }
+    *replacement = 0;
+}
