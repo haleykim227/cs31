@@ -1,0 +1,22 @@
+Seungwon Kim (Haley)
+405111152
+
+Step 5: 
+input "0" for "How many registered voters were surveyed?"
+input "2" for "How many of them say they will vote for Newsom?"
+input "3" for "How many of them say they will vote for Cox?"
+There were no error messages displayed, and the build was successful.
+The program stated that inf% would vote for Newsom, that inf% would vote for Cox, and that Cox is predicted to win the election.
+Obviously, the results were nonsensical.
+
+Step 6:
+logic error: changed the multiplication to division on line 20 after 100.0
+There were no error messages, and the build was successful.
+Results were incorrect, as when input 10, 3, and 7, the result was that 3.3% would vote for Newsom and that 70.0% would vote for Cox. The correct answers would have been 30.0% and 70.0%.
+
+Step 7:
+compile error: 
+1) deleted a semicolon after line 20
+2) deleted a curly bracket at the end of the program on line 34
+An error message indicating "Build Failed" as well as error messages on line 20 and line 34 stating "Expected ; at the end of declaration" and "Expected '}'"
+There were no results since the build was unsuccessful.
