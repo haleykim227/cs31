@@ -1,24 +1,171 @@
 Haley Kim
 405111152
-Project 2 Report
+Project 3 Report
 
-a) Notable Obstacles:
+a)
+1. Figuring out a way to find the state code within the pollData string to run through the isValidUppercaseStateCode function.
+2. Figuring out the & and how it affects functions.
+3. Making sure I was testing various test cases enough to cover all possible errors that may occur.
+4. Making sure my program was not relying on any undefined behavior.
 
-1. If-statements and how to organize them in brackets so that there are no hanging else-statements
-2. Remembering to input cin.ignore after cin integer and before getline
-3. Making sure the precision of the decimal is 2
-4. Figuring out the extra charge based on miles driven to match the specs given
+b)
+function digitsalphacomma
+	check through every character
+		if it's not a letter, digit, or comma
+			return false
+	return true
 
-b) List of Test Data:
+function isValidUppercaseStateCode
+. . .
 
-1. Negative number for Odometer at Start (-2)
-2. 0 for Odometer at Start (0)
-3. Lesser number for Odometer at End than Odometer at Start (2,1)
-4. Negative number of rental days (2,3,-2)
-5. Empty string for Customer Name (2,3,4,"")
-6. Luxury status that is not y or n (2,3,4,John,Y)
-7. Month number that is not between 1 and 12 (2,3,4,John,y,13)
-8. Correct input for non-luxury car (2,3,4.John,n,12)
-9. Correct input for luxury car (2,3,4,John,y,12)
-10. Correct input for winter months (2,3,4,John,n,1)
-11. Correct input for different mileage (0,100,4,John,y,12) (0,300,4,John,y,12) (0,400,4,John,y,12)(0,500,4,John,y,12)
+function stateforecast
+	check through every character until second to last one
+		set statecode as empty string
+		if two adjacent characters are both letters
+			add both characters to string statecode
+			if string statecode is not a valid state code
+				return false
+	if pollData is longer than 2 characters
+		check through every character until third to last one
+			if three adjacent characters are digits
+				return false
+	if pollData is longer than 2 characters
+		check through every character from second character to third to last character
+			if the character is a comma
+				if the character before the comma is not a letter
+					return false
+				if the character after the comma is not a letter
+					return false
+				if the character after the comma is a letter
+					if the character after the letter is not a letter
+						return false
+	if pollData is longer than 2 characters
+		check through every character until third to last one
+			if character is a digit
+				if neither of the two characters after the digit are letters
+					return false
+				if both characters after the digit are letters
+					return false
+	if pollData is longer than 2 characters
+		check through every character until third to last one
+			if there are three adjacent letters
+				return false
+	return true
+
+function hasProperSyntax
+	if pollData is empty
+		return true
+	if pollData is one character
+		return false
+	if neither the first nor second characters are letters
+		return false
+	if pollData has anything other than letters, digits, or commas
+		return false
+	if the string does not begin or end with a letter
+		return false
+	if it is not a valid state code
+		return false
+	else
+		return true
+
+function tallySeats
+	if pollData does not have proper syntax
+		return 1
+	if party is not a letter
+		return 2
+	set seatTally as 0
+	if pollData is an empty string
+		return 0
+	set digits as an empty string
+	check through every character
+		if character is a digit
+			add digit to string digits
+	if string digits is empty
+		return 0
+	check through every character starting from the fourth character
+		set onedigitvotes as empty string
+		set twodigitvotes as empty string
+		if character is a letter and the two before it are digits
+			if character is the same letter as party
+				add first digit to string twodigitvotes
+				add second digit to string twodigitvotes
+				add int version of twodigitvotes to seatTally
+		if character is a letter and character before letter is a digit and character before digit is a letter
+			if character is the same letter as party
+				add digit to string onedigitvotes
+				add int version of onedigitvotes to seatTally
+	return 0
+
+c)
+THESE TEST CASES SHOULD PASS:
+    assert(hasProperSyntax(""));
+- to see if a blank string does pass hasProperSyntax
+    assert(hasProperSyntax("ct"));
+- to see if just a state code does pass hasProperSyntax
+    assert(hasProperSyntax("ct1d"));
+- to see if one state forecast does pass hasProperSyntax
+    assert(hasProperSyntax("ct1d1r"));
+- to see if a state forecast with multiple party results pass hasProperSyntax
+    assert(hasProperSyntax("ct1d,nv"));
+- to see if a state forecast, a comma, and a state code pass hasProperSyntax
+    assert(hasProperSyntax("ct1d,nv,va,nY11g"));
+- to see if a state forecast, a state code, a state code, and a state forecast pass hasProperSyntax
+    assert(hasProperSyntax("CT5D,NY9R17D1I,VT,ne3r00D"));
+- to see if a state forecast, a state forecast with multiple party results, a state code, and a state forecase pass hasProperSyntax
+    assert(hasProperSyntax("vt,vt"));
+- to see if two state codes pass hasProperSyntax
+    int seats;
+    seats = -999;    // so we can detect whether tallySeats sets seats
+    assert(tallySeats("CT5D,NY9R17D1I,VT,ne3r00D", 'd', seats) == 0  &&  seats == 22);
+- to see if tallySeats can properly count the votes given correct pollData and party code
+    seats = -999;    // so we can detect whether tallySeats sets seats
+    assert(tallySeats("CT5D,NY9R17D1I,VT,ne3r00D", '%', seats) == 2  &&  seats == -999);
+- to see if tallySeats returns 2 if given wrong party code, not changing seatTally
+    assert(tallySeats("va55d,nv,nY3r7D,TX12d", 'D', seats) == 0  &&  seats == 74);
+- to see if tallySeats can properly count the votes given correct pollData and party code
+    assert(tallySeats("", 'd', seats) == 0  &&  seats == 0);
+- to see if a blank pollData string still passes as valid under tallySeats
+    assert(tallySeats("CT", 'i', seats) == 0  &&  seats == 0);
+- to see if just a state code still passes as valid under tallySeats
+    assert(tallySeats("va55d", '@', seats) == 2  &&  seats == 0);
+- to see if tallySeats returns 2 if given wrong party code
+    assert(tallySeats("va55d@", 'd', seats) == 1  &&  seats == 0);
+- to see if tallySeats returns 1 if given wrong pollData
+    assert(tallySeats("va55d3i,nv,nY3r7D2i3r4i,TX12d3i", 'i', seats) == 0  &&  seats == 12);
+- to see if tallySeats can properly count the votes given correct pollData and party code
+
+THESE TEST CASES SHOULD NOT PASS:
+    assert(!hasProperSyntax(" "));
+- to see if it does not pass due to space character
+    assert(!hasProperSyntax("!"));
+- to see if it does not pass due to exclamation mark
+    assert(!hasProperSyntax("D"));
+- to see if it does not pass due to single character
+    assert(!hasProperSyntax("DP"));
+- to see if it does not pass due to invalid state code
+    assert(!hasProperSyntax("vtx"));
+- to see if it does not pass due to three letters in a row
+    assert(!hasProperSyntax("asdkfhaslfhs"));
+- to see if it does not pass due to random letters
+    assert(!hasProperSyntax("a,ca"));
+- to see if it does not pass due to invalid party letter with no votes
+    assert(!hasProperSyntax("ct01ny"));
+- to see if it does not pass due to two letters where party code should be
+    assert(!hasProperSyntax("ct01,ny"));
+- to see if it does not pass due to invalid state forecast with no party code
+    assert(!hasProperSyntax("CT5D,NY9R17D1I,VTx,ne3r00D"));
+- to see if it does not pass due to three letters in a row
+    assert(!hasProperSyntax("CT!5D,NY9R17D1I,VT,ne3r00D"));
+- to see if it does not pass due to exclamation mark
+    assert(!hasProperSyntax(",CT5D,NY9R17D1I,VT,ne3r00D"));
+- to see if it does not pass due to starting comma
+    assert(!hasProperSyntax("CT5D, NY9R17D1I,VT,ne3r00D"));
+- to see if it does not pass due to space character
+    assert(!hasProperSyntax("CT5D,NY9R17D1I,VT,ne3r00DE"));
+- to see if it does not pass due to invalid last state forecast
+    assert(!hasProperSyntax("CT5D,NY9R17D1I,VT,,ne3r00D"));
+- to see if it does not pass due to two commas in a row
+    assert(!hasProperSyntax("CT5D,NY9R17D1I,VT,,ne3r002D"));
+- to see if it does not pass due to two commas in a row as well as invalid state forecast
+    assert(!hasProperSyntax("CT5D,NY9R17D1I,VT,ne3r002D"));
+- to see if it does not pass due to invalid state forecast at end
